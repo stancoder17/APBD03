@@ -1,11 +1,12 @@
-﻿using APBD03.Cargos;
-using Containers;
-namespace APBD03.Containers;
+﻿using APBD03.Interface;
 
-public class GContainer : Container<GasCargo>, IHazardNotifier
+namespace APBD03.Classes;
+
+public class GContainer(double height, double netWeight, double depth, double maxLoadCapacity, double pressure) : Container(height, netWeight, depth, maxLoadCapacity), IHazardNotifier
 {
     private static int _id = 1;
-    private double _pressure; // atm
+    public double Pressure { get; set; } = pressure; // atm
+    public GasCargo GasCargo { get; set; }
 
     /// <summary>
     /// Id: only get or increment by 1
@@ -16,30 +17,12 @@ public class GContainer : Container<GasCargo>, IHazardNotifier
         {
             if (value != _id + 1)
                 throw new ArgumentException("Id may only be incremented by 1");
+            
+            _id = value;
         } 
     }
 
-    /// <summary>
-    /// Make sure that pressure is not negative
-    /// </summary>
-    /// <exception cref="ArgumentException"></exception>
-    public double Pressure
-    {
-        get => _pressure;
-        set
-        {
-            if (value < 0 || _pressure - value < 0)
-                throw new ArgumentException("Pressure cannot be negative");
-        }
-    }
-
-
-    public GContainer(double mass, double height, double netWeight, double depth, double maxLoadCapacity, double pressure)
-        : base(mass, height, netWeight, depth, maxLoadCapacity)
-    {
-        Pressure = pressure;
-    }
-    
+   
     protected override string GenerateSerialNumber()
     {
         return "KON-G-" + Id++;
@@ -64,5 +47,10 @@ public class GContainer : Container<GasCargo>, IHazardNotifier
     public void NotifyDanger()
     {
         Console.WriteLine("!! DANGER !!!: " + SerialNumber);
+    }
+
+    public override string ToString()
+    {
+        return base.ToString() + $", pressure: {Pressure}";
     }
 }

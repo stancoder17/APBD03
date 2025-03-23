@@ -1,32 +1,26 @@
-﻿using APBD03.Cargos;
-namespace APBD03.Containers;
+﻿using APBD03.Interface;
 
-public class LContainer : Container<LiquidCargo>, IHazardNotifier
+namespace APBD03.Classes;
+
+public class LContainer(double height, double netWeight, double depth, double maxLoadCapacity) : Container(height, netWeight, depth, maxLoadCapacity), IHazardNotifier
 {
     private static int _id = 1;
+    public LiquidCargo LiquidCargo { get; set; }
     
     /// <summary>
     /// Id: only get or increment by 1
     /// </summary>
     public int Id {
-        get
-        {
-            return _id;
-        }
+        get => _id;
         private set
         {
             if (value != _id + 1)
-            {
                 throw new ArgumentException("Id may only be incremented by 1");
-            }
+            
+            _id = value;
         } 
     }
     
-    
-
-    public LContainer(double mass, double height, double netWeight, double depth, double maxLoadCapacity)
-        : base(mass, height, netWeight, depth, maxLoadCapacity) { }
-
     protected override string GenerateSerialNumber()
     {
         return "KON-L-" + Id++;
@@ -38,7 +32,7 @@ public class LContainer : Container<LiquidCargo>, IHazardNotifier
     /// <param name="massToLoad"></param>
     protected override void ValidateSpecificLoadingConditions(double massToLoad)
     {
-        if (Cargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.5 || !Cargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.9)
+        if (LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.5 || !LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.9)
             NotifyDanger();
     }
     
@@ -46,7 +40,6 @@ public class LContainer : Container<LiquidCargo>, IHazardNotifier
     {
         
     }
-
     
     public void NotifyDanger()
     {

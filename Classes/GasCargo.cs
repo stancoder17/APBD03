@@ -1,4 +1,4 @@
-﻿namespace APBD03.Cargos;
+﻿namespace APBD03.Classes;
 
 public class GasCargo : Cargo
 {

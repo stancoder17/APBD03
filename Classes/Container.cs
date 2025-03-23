@@ -1,8 +1,8 @@
-﻿using APBD03.Cargos;
-using Containers;
-namespace APBD03.Containers;
+﻿using APBD03.Exception;
 
-public abstract class Container<TCargo> where TCargo : Cargo
+namespace APBD03.Classes;
+
+public abstract class Container 
 {
     
     /// Fields
@@ -13,23 +13,16 @@ public abstract class Container<TCargo> where TCargo : Cargo
     private double _maxLoadCapacity; // kg
     public string SerialNumber { get; }
     
-    /// <summary>
-    /// There may only be one type of cargo in the container
-    /// </summary>
-    public TCargo Cargo { get; set; }
-    
     
     /// Constructor 
-    protected Container(double mass, double height, double netWeight, double depth, double maxLoadCapacity)
+    protected Container(double height, double netWeight, double depth, double maxLoadCapacity)
     {
-        Mass = mass;
         Height = height;
         NetWeight = netWeight;
         Depth = depth;
         MaxLoadCapacity = maxLoadCapacity;
         SerialNumber = GenerateSerialNumber();
     }
-    
 
     
     /// Getters and setters 
@@ -59,8 +52,8 @@ public abstract class Container<TCargo> where TCargo : Cargo
         }
     }
 
-
-    /// Methods
+    
+    
     public void LoadCargo(double massToLoad)
     {
         // Check general conditions
@@ -78,7 +71,6 @@ public abstract class Container<TCargo> where TCargo : Cargo
         // Loading cargo
         Mass += massToLoad;
     }
-
     
     public void UnloadCargo(double massToUnload)
     {
@@ -98,11 +90,21 @@ public abstract class Container<TCargo> where TCargo : Cargo
             Mass -= massToUnload;
     }
 
-
+    public double GetTotalWeight()
+    {
+        return Mass + NetWeight;
+    }
+    
     /// Abstract methods 
     protected abstract string GenerateSerialNumber();
 
     protected abstract void ValidateSpecificLoadingConditions(double massToLoad);
     
     protected abstract void ValidateSpecificUnloadingConditions(double massToUnLoad);
+
+    public override string ToString()
+    {
+        return $"[Container {SerialNumber}] -- mass: {Mass}, height: {Height}, net weight: {NetWeight}, depth: {Depth}, max load capacity: {MaxLoadCapacity}";
+    }
 }
+

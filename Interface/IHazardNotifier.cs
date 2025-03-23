@@ -1,4 +1,4 @@
-﻿namespace APBD03.Containers;
+﻿namespace APBD03.Interface;
 
 public interface IHazardNotifier
 {
