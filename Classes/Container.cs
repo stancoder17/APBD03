@@ -7,9 +7,9 @@ public abstract class Container
     
     /// Fields
     private double _mass; // kg
-    public double Height { get; } // cm
-    public double NetWeight { get; } // kg
-    public double Depth { get; } // cm
+    private double _height; // cm
+    private double _netWeight; // kg
+    private double _depth; // cm
     private double _maxLoadCapacity; // kg
     public string SerialNumber { get; }
     
@@ -37,16 +37,52 @@ public abstract class Container
             _mass = value;
         } 
     }
-    
 
+    public double Height
+    {
+        get => _height;
+        set
+        {
+            if (value <= 0)
+                throw new ArgumentOutOfRangeException(nameof(value), "Wysokość musi być dodatnia");
+            
+            _height = value;
+        }
+    }
+
+    public double NetWeight
+    {
+        get => _netWeight;
+        set 
+        {
+            if (value < 0)
+                throw new ArgumentOutOfRangeException(nameof(value), "Masa własna nie może być ujemna");
+            
+            _netWeight = value;
+        }
+    }
+
+    public double Depth
+    {
+        get => _depth;
+        set
+        {
+            if (value <= 0)
+                throw new ArgumentOutOfRangeException(nameof(value), "Głębokość nie może być ujemna");
+            
+            _depth = value;
+        }
+    }
+
+
+    /// Methods
     public double MaxLoadCapacity
     {
         get => _maxLoadCapacity;
         set
         {
             if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(MaxLoadCapacity),
-                    "Maksymalna ładowność nie może być ujemna");
+                throw new ArgumentOutOfRangeException(nameof(MaxLoadCapacity), "Maksymalna ładowność nie może być ujemna");
             
             _maxLoadCapacity = value;
         }
@@ -85,7 +121,10 @@ public abstract class Container
         
         // Unloading cargo
         if (massToUnload > Mass)
+        {
             Mass = 0;
+            Console.WriteLine("Mass to unload is too big, unloading all cargo");
+        }
         else 
             Mass -= massToUnload;
     }

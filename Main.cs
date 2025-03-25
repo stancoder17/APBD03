@@ -6,7 +6,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Ship targetShip = new Ship("Shipper", 100, 5, 900);
+        /*Ship targetShip = new Ship("Shipper", 100, 5, 900);
         Ship originShip = new Ship("Origin", 100, 5, 900);
         
         LContainer lContainer = new LContainer(10, 50, 7, 600);
@@ -24,6 +24,7 @@ public class Program
         
         originShip.AddContainer(lContainer);
         originShip.AddContainer(lContainer3);
-        originShip.SwapContainers(lContainer2, lContainer);
+        originShip.SwapContainers(lContainer2, lContainer);*/
+        
     }
 }

@@ -1,11 +1,12 @@
-﻿using APBD03.Interface;
+﻿using APBD03.Exception;
+using APBD03.Interface;
 
 namespace APBD03.Classes;
 
 public class LContainer(double height, double netWeight, double depth, double maxLoadCapacity) : Container(height, netWeight, depth, maxLoadCapacity), IHazardNotifier
 {
     private static int _id = 1;
-    public LiquidCargo LiquidCargo { get; set; }
+    public LiquidCargo? LiquidCargo { get; set; }
     
     /// <summary>
     /// Id: only get or increment by 1
@@ -32,12 +33,18 @@ public class LContainer(double height, double netWeight, double depth, double ma
     /// <param name="massToLoad"></param>
     protected override void ValidateSpecificLoadingConditions(double massToLoad)
     {
-        if (LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.5 || !LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.9)
+        if (LiquidCargo == null)
+            throw new NoCargoException("Cannot load cargo that is null");
+        
+        if (LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.5
+            || !LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.9)
             NotifyDanger();
     }
     
     protected override void ValidateSpecificUnloadingConditions(double massToUnload)
     {
+        if (LiquidCargo == null)
+            throw new NoCargoException("Cannot unload cargo that is null");
         
     }
     

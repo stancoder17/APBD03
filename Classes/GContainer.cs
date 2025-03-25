@@ -1,4 +1,5 @@
-﻿using APBD03.Interface;
+﻿using APBD03.Exception;
+using APBD03.Interface;
 
 namespace APBD03.Classes;
 
@@ -6,7 +7,7 @@ public class GContainer(double height, double netWeight, double depth, double ma
 {
     private static int _id = 1;
     public double Pressure { get; set; } = pressure; // atm
-    public GasCargo GasCargo { get; set; }
+    public GasCargo? GasCargo { get; set; }
 
     /// <summary>
     /// Id: only get or increment by 1
@@ -30,7 +31,8 @@ public class GContainer(double height, double netWeight, double depth, double ma
     
     protected override void ValidateSpecificLoadingConditions(double massToLoad)
     {
-        
+        if (GasCargo == null)
+            throw new NoCargoException("Cannot load cargo that is null");
     }
     
     
@@ -40,6 +42,9 @@ public class GContainer(double height, double netWeight, double depth, double ma
     /// <param name="massToUnload"></param>
     protected override void ValidateSpecificUnloadingConditions(double massToUnload)
     {
+        if (GasCargo == null)
+            throw new NoCargoException("Cannot unload cargo that is null");
+        
         if (Mass - massToUnload < Mass * 0.05)
             NotifyDanger();
     }

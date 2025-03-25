@@ -1,14 +1,16 @@
 ﻿namespace APBD03.Classes;
 
-public class Cargo
+public class Cargo(string name)
 {
-    public string Name { get; }
+    private string _name = name;
 
-    protected Cargo(string name)
+    public string Name
     {
-        if (name == null)
-            throw new ArgumentNullException(nameof(name));
-        
-        Name = name;
+        get => _name;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentException("Name cannot be empty");
+        }
     }
 }

@@ -1,11 +1,6 @@
 ﻿namespace APBD03.Classes;
 
-public class LiquidCargo : Cargo
+public class LiquidCargo(string name, bool isHazardous) : Cargo(name)
 {
-    public bool IsHazardous { get; }
-
-    public LiquidCargo(string name, bool isHazardous) : base(name)
-    {
-        IsHazardous = isHazardous;
-    }
+    public bool IsHazardous { get; set; } = isHazardous;
 }

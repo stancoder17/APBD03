@@ -1,6 +1,5 @@
 ﻿namespace APBD03.Classes;
 
-public class GasCargo : Cargo
+public class GasCargo(string name) : Cargo(name)
 {
-    public GasCargo(string name) : base(name) { }
 }
