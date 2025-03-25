@@ -1,4 +1,4 @@
-﻿namespace APBD03.Classes;
+﻿namespace APBD03.Class;
 
 public class LCargo(string name, bool isHazardous) : Cargo(name)
 {

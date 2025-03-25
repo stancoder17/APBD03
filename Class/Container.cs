@@ -1,6 +1,6 @@
 ﻿using APBD03.Exception;
 
-namespace APBD03.Classes;
+namespace APBD03.Class;
 
 public abstract class Container 
 {

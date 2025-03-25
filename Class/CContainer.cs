@@ -1,6 +1,6 @@
 ﻿using APBD03.Exception;
 
-namespace APBD03.Classes;
+namespace APBD03.Class;
 
 public class CContainer(double height, double netWeight, double depth, double maxLoadCapacity, double temperature) : Container(height, netWeight, depth, maxLoadCapacity)
 {

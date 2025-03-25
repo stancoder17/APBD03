@@ -1,13 +1,14 @@
 ﻿using APBD03.Exception;
 using APBD03.Interface;
 
-namespace APBD03.Classes;
+namespace APBD03.Class;
 
-public class LContainer(double height, double netWeight, double depth, double maxLoadCapacity) : Container(height, netWeight, depth, maxLoadCapacity), IHazardNotifier
+public class GContainer(double height, double netWeight, double depth, double maxLoadCapacity, double pressure) : Container(height, netWeight, depth, maxLoadCapacity), IHazardNotifier
 {
     private static int _id = 1;
-    public LCargo? LiquidCargo { get; set; }
-    
+    public double Pressure { get; set; } = pressure; // atm
+    public GCargo? GasCargo { get; set; }
+
     /// <summary>
     /// Id: only get or increment by 1
     /// </summary>
@@ -21,34 +22,40 @@ public class LContainer(double height, double netWeight, double depth, double ma
             _id = value;
         } 
     }
-    
+
+   
     protected override string GenerateSerialNumber()
     {
-        return "KON-L-" + Id++;
+        return "KON-G-" + Id++;
     }
     
-    /// <summary>
-    /// If cargo is hazardous it may be loaded up to 50% of container's max load capacity, 90% if it's not hazardous
-    /// </summary>
-    /// <param name="massToLoad"></param>
     protected override void ValidateSpecificLoadingConditions(double massToLoad)
     {
-        if (LiquidCargo == null)
+        if (GasCargo == null)
             throw new NoCargoException("Cannot load cargo that is null");
-        
-        if (LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.5
-            || !LiquidCargo.IsHazardous && Mass + massToLoad > MaxLoadCapacity * 0.9)
-            NotifyDanger();
     }
     
+    
+    /// <summary>
+    /// While unloading the gas cargo, 5% of it's load must be left inside the container
+    /// </summary>
+    /// <param name="massToUnload"></param>
     protected override void ValidateSpecificUnloadingConditions(double massToUnload)
     {
-        if (LiquidCargo == null)
+        if (GasCargo == null)
             throw new NoCargoException("Cannot unload cargo that is null");
+        
+        if (Mass - massToUnload < Mass * 0.05)
+            NotifyDanger();
     }
-    
+
     public void NotifyDanger()
     {
-        Console.WriteLine("DANGER!: " + SerialNumber);
+        Console.WriteLine("!! DANGER !!!: " + SerialNumber);
+    }
+
+    public override string ToString()
+    {
+        return base.ToString() + $", pressure: {Pressure} atm";
     }
 }
