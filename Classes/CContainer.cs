@@ -6,7 +6,7 @@ public class CContainer(double height, double netWeight, double depth, double ma
 {
     private static int _id = 1;
     private double _temperature = temperature; // celsius
-    public CooledCargo? CooledCargo { get; set; }
+    public CCargo? CooledCargo { get; set; }
 
     /// <summary>
     /// Id: only get or increment by 1
@@ -54,6 +54,6 @@ public class CContainer(double height, double netWeight, double depth, double ma
 
     public override string ToString()
     {
-        return base.ToString() + $", temperature: {Temperature}";
+        return base.ToString() + $", temperature: {Temperature} C";
     }
 }

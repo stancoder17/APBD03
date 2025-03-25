@@ -6,7 +6,7 @@ namespace APBD03.Classes;
 public class LContainer(double height, double netWeight, double depth, double maxLoadCapacity) : Container(height, netWeight, depth, maxLoadCapacity), IHazardNotifier
 {
     private static int _id = 1;
-    public LiquidCargo? LiquidCargo { get; set; }
+    public LCargo? LiquidCargo { get; set; }
     
     /// <summary>
     /// Id: only get or increment by 1
@@ -45,7 +45,6 @@ public class LContainer(double height, double netWeight, double depth, double ma
     {
         if (LiquidCargo == null)
             throw new NoCargoException("Cannot unload cargo that is null");
-        
     }
     
     public void NotifyDanger()

@@ -1,6 +1,6 @@
 ﻿namespace APBD03.Classes;
 
-public class CooledCargo(string name, double temperatureRequired) : Cargo(name)
+public class CCargo(string name, double temperatureRequired) : Cargo(name)
 {
     private double _temperatureRequired = temperatureRequired;
 
@@ -10,7 +10,9 @@ public class CooledCargo(string name, double temperatureRequired) : Cargo(name)
         set
         {
             if (value < -273.15)
-                throw new ArgumentException("Temperature cannot be lower than -273.15 degrees Celsius");
+                throw new ArgumentException("Temperature cannot be lower than -273.15 C");
+            
+            _temperatureRequired = value;
         }
     }
 }

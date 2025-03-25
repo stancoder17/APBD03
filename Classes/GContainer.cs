@@ -7,7 +7,7 @@ public class GContainer(double height, double netWeight, double depth, double ma
 {
     private static int _id = 1;
     public double Pressure { get; set; } = pressure; // atm
-    public GasCargo? GasCargo { get; set; }
+    public GCargo? GasCargo { get; set; }
 
     /// <summary>
     /// Id: only get or increment by 1
@@ -56,6 +56,6 @@ public class GContainer(double height, double netWeight, double depth, double ma
 
     public override string ToString()
     {
-        return base.ToString() + $", pressure: {Pressure}";
+        return base.ToString() + $", pressure: {Pressure} atm";
     }
 }

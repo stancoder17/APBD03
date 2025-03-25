@@ -32,7 +32,7 @@ public abstract class Container
         set
         {
             if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(Mass), "Masa nie może być ujemna");
+                throw new ArgumentException("Mass cannot be negative");
             
             _mass = value;
         } 
@@ -44,7 +44,10 @@ public abstract class Container
         set
         {
             if (value <= 0)
-                throw new ArgumentOutOfRangeException(nameof(value), "Wysokość musi być dodatnia");
+                throw new ArgumentException("Height must be positive");
+            
+            if (value < _depth)
+                throw new ArgumentException("Height cannot be lower than depth");
             
             _height = value;
         }
@@ -56,7 +59,7 @@ public abstract class Container
         set 
         {
             if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(value), "Masa własna nie może być ujemna");
+                throw new ArgumentException("Net weight cannot be negative");
             
             _netWeight = value;
         }
@@ -68,28 +71,26 @@ public abstract class Container
         set
         {
             if (value <= 0)
-                throw new ArgumentOutOfRangeException(nameof(value), "Głębokość nie może być ujemna");
+                throw new ArgumentException("Depth must be positive");
             
             _depth = value;
         }
     }
-
-
-    /// Methods
     public double MaxLoadCapacity
     {
         get => _maxLoadCapacity;
         set
         {
             if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(MaxLoadCapacity), "Maksymalna ładowność nie może być ujemna");
+                throw new ArgumentException("Max load capacity cannot be negative");
             
             _maxLoadCapacity = value;
         }
     }
 
-    
-    
+
+
+    /// Methods
     public void LoadCargo(double massToLoad)
     {
         // Check general conditions
@@ -106,13 +107,14 @@ public abstract class Container
         
         // Loading cargo
         Mass += massToLoad;
+        Console.WriteLine($"Loading {massToLoad} kg of cargo");
     }
     
     public void UnloadCargo(double massToUnload)
     {
         // Check general conditions
         if (massToUnload < 0)
-            throw new ArgumentOutOfRangeException(nameof(massToUnload), "Mass to load must not be negative");
+            throw new ArgumentException("Mass to load must not be negative");
         
         
         // Check conditions that apply to a specific Container type
@@ -123,10 +125,13 @@ public abstract class Container
         if (massToUnload > Mass)
         {
             Mass = 0;
-            Console.WriteLine("Mass to unload is too big, unloading all cargo");
+            Console.WriteLine("Selected mass to unload is too big, unloading all cargo");
         }
-        else 
+        else
+        {
             Mass -= massToUnload;
+            Console.WriteLine($"Unloading {massToUnload} kg of cargo");
+        }
     }
 
     public double GetTotalWeight()
@@ -143,7 +148,7 @@ public abstract class Container
 
     public override string ToString()
     {
-        return $"[Container {SerialNumber}] -- mass: {Mass}, height: {Height}, net weight: {NetWeight}, depth: {Depth}, max load capacity: {MaxLoadCapacity}";
+        return $"[Container {SerialNumber}] -- mass: {Mass} kg, height: {Height} cm, net weight: {NetWeight} kg, depth: {Depth} cm, max load capacity: {MaxLoadCapacity} kg";
     }
 }
 
